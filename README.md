@@ -1,3 +1,3 @@
 # captcha-solver-demo
 
-Initial version of the demo app (Round 1)
+Updated Brief: Revised version after feedback (Round 2)

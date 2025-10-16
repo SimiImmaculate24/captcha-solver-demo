@@ -1,3 +1,3 @@
 # captcha-solver-demo
 
-Demo brief
+Demo captcha solver app

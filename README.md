@@ -1,3 +1,3 @@
 # captcha-solver-demo
 
-Demo captcha solver app
+Updated Brief: Updated captcha solver for round 2

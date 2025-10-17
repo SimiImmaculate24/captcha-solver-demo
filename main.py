@@ -132,7 +132,7 @@ def pull_and_update_repo(task_data: dict) -> dict:
 
 
 # 🚀 Main endpoint for handling both build + update tasks
-@app.post("/build-app")
+@app.post("/submit-task")
 async def build_app(request: Request):
     task_data = await request.json()
 

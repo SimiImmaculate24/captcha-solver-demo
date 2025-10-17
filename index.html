@@ -1,1 +1,67 @@
-<html><body><h1>Deploy demo captcha solver app</h1></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Captcha Solver Demo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        #captchaBox {
+            font-size: 24px;
+            font-weight: bold;
+            letter-spacing: 5px;
+            margin: 20px 0;
+        }
+        input, button {
+            padding: 10px;
+            font-size: 16px;
+        }
+        #result {
+            margin-top: 20px;
+            font-weight: bold;
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    <h1>Captcha Solver Demo</h1>
+    <div id="captchaBox"></div>
+    <input type="text" id="captchaInput" placeholder="Enter captcha here">
+    <button onclick="checkCaptcha()">Submit</button>
+    <p id="result"></p>
+
+    <script>
+        let currentCaptcha = "";
+
+        // Function to generate random 5-letter captcha
+        function generateCaptcha() {
+            const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            let captcha = "";
+            for(let i=0; i<5; i++){
+                captcha += letters.charAt(Math.floor(Math.random() * letters.length));
+            }
+            currentCaptcha = captcha;
+            document.getElementById("captchaBox").innerText = captcha;
+        }
+
+        // Check user input against captcha
+        function checkCaptcha() {
+            const input = document.getElementById("captchaInput").value.toUpperCase();
+            if(input === currentCaptcha){
+                document.getElementById("result").innerText = "Captcha Solved!";
+                generateCaptcha(); // generate new captcha after success
+                document.getElementById("captchaInput").value = "";
+            } else {
+                document.getElementById("result").innerText = "Incorrect! Try again.";
+                document.getElementById("captchaInput").value = "";
+            }
+        }
+
+        // Generate first captcha on page load
+        generateCaptcha();
+    </script>
+</body>
+</html>

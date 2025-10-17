@@ -1,1 +1,141 @@
-<html><body><h1>Create a captcha solver that loads ?url= and displays solved text.</h1></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Captcha Solver Demo</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        margin-top: 50px;
+        background-color: #f2f2f2;
+    }
+    #captchaCanvas {
+        border: 2px solid #333;
+        margin: 20px auto;
+        display: block;
+        background-color: #fff;
+    }
+    input, button {
+        padding: 10px;
+        font-size: 16px;
+        margin: 5px;
+    }
+    #result {
+        margin-top: 20px;
+        font-weight: bold;
+        color: green;
+    }
+    #timer {
+        margin-top: 10px;
+        font-weight: bold;
+        color: red;
+    }
+</style>
+</head>
+<body>
+<h1>Captcha Solver Demo</h1>
+
+<canvas id="captchaCanvas" width="200" height="70"></canvas>
+<br>
+<input type="text" id="captchaInput" placeholder="Enter captcha here">
+<button onclick="checkCaptcha()">Submit</button>
+<button onclick="generateCaptcha()">Refresh Captcha</button>
+<p id="result"></p>
+<p id="timer"></p>
+
+<script>
+let currentCaptcha = "";
+let countdown;
+let timeLeft = 15; // seconds per captcha
+
+// Generate random 5-letter captcha
+function generateCaptcha() {
+    const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    let captcha = "";
+    for(let i=0; i<5; i++){
+        captcha += letters.charAt(Math.floor(Math.random() * letters.length));
+    }
+    currentCaptcha = captcha;
+    drawCaptcha(captcha);
+    resetTimer();
+}
+
+// Draw captcha on canvas with random colors, rotation, and lines
+function drawCaptcha(text) {
+    const canvas = document.getElementById("captchaCanvas");
+    const ctx = canvas.getContext("2d");
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Background noise
+    ctx.fillStyle = "#f0f0f0";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Draw random lines
+    for(let i=0; i<5; i++){
+        ctx.strokeStyle = getRandomColor();
+        ctx.beginPath();
+        ctx.moveTo(Math.random()*canvas.width, Math.random()*canvas.height);
+        ctx.lineTo(Math.random()*canvas.width, Math.random()*canvas.height);
+        ctx.stroke();
+    }
+
+    // Draw letters
+    for(let i=0; i<text.length; i++){
+        const fontSize = 24 + Math.floor(Math.random()*8);
+        ctx.font = fontSize + "px Arial";
+        ctx.fillStyle = getRandomColor();
+        const x = 20 + i*35;
+        const y = 40 + Math.random()*10;
+        const angle = (Math.random()-0.5) * 0.4;
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate(angle);
+        ctx.fillText(text[i], 0, 0);
+        ctx.restore();
+    }
+}
+
+// Random color generator
+function getRandomColor() {
+    const r = Math.floor(Math.random()*150);
+    const g = Math.floor(Math.random()*150);
+    const b = Math.floor(Math.random()*150);
+    return `rgb(${r},${g},${b})`;
+}
+
+// Check user input
+function checkCaptcha() {
+    const input = document.getElementById("captchaInput").value.toUpperCase();
+    if(input === currentCaptcha){
+        document.getElementById("result").innerText = "Captcha Solved!";
+        generateCaptcha(); // generate new captcha
+        document.getElementById("captchaInput").value = "";
+    } else {
+        document.getElementById("result").innerText = "Incorrect! Try again.";
+        document.getElementById("captchaInput").value = "";
+    }
+}
+
+// Timer functions
+function resetTimer() {
+    clearInterval(countdown);
+    timeLeft = 15;
+    document.getElementById("timer").innerText = `Time left: ${timeLeft}s`;
+
+    countdown = setInterval(() => {
+        timeLeft--;
+        document.getElementById("timer").innerText = `Time left: ${timeLeft}s`;
+        if(timeLeft <= 0){
+            clearInterval(countdown);
+            document.getElementById("result").innerText = "Time expired! Generating new captcha...";
+            generateCaptcha();
+        }
+    }, 1000);
+}
+
+// Initialize captcha on page load
+window.onload = generateCaptcha;
+</script>
+</body>
+</html>

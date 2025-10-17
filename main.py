@@ -173,4 +173,4 @@ async def build_app(request: Request):
 
 @app.get("/")
 def read_root():
-    return {"message": "FastAPI agent running successfully!"}
+    return {"message": "Captcha Solver API running successfully!"}

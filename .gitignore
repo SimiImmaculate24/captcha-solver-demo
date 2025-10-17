@@ -1,0 +1,21 @@
+# Ignore Python cache and compiled files
+__pycache__/
+*.pyc
+*.pyo
+
+# Virtual environments
+venv/
+.venv/
+fastapi-agent/
+env/
+.env
+
+# Local configuration
+*.log
+.DS_Store
+.vscode/
+*.sqlite3
+
+# OS generated files
+Thumbs.db
+.idea/
